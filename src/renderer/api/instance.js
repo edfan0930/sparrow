@@ -1,20 +1,20 @@
 /* eslint-disable indent */
 /* eslint-disable no-alert */
-import axios from "axios";
-import config from "./config";
-import ErrorCode from "./ErrorCode";
-import { Message } from "iview";
+import axios from 'axios';
+import config from './config';
+import ErrorCode from './ErrorCode';
+import { Message } from 'iview';
 import { ToFormData, ToQuerystr, Has } from '../utils';
 
 const axiosIns = axios.create(config);
 
 // 回傳攔截
 axiosIns.interceptors.response.use(
-  response => {
+  (response) => {
     // 因為使用外部測試網址 所以沒有驗證結構
     // 如果需要驗證註解或刪掉下面一行
-    return response // 不檢查，直接彈出
-    if (!Has(response, "data") || !Has(response.data, "status")) {
+    return response; // 不檢查，直接彈出
+    if (!Has(response, 'data') || !Has(response.data, 'status')) {
       return null;
     }
     const { code } = response.data.status;
@@ -23,11 +23,11 @@ axiosIns.interceptors.response.use(
     Message.error(ErrorCode(code));
     return null;
   },
-  error => {
+  (error) => {
     Message.destroy();
     Message.error(ErrorCode(error.response.status));
     return null;
-  }
+  },
 );
 
 /**
@@ -36,7 +36,7 @@ axiosIns.interceptors.response.use(
  * @param { Object } headers
  */
 const Get = (uri, Params, headers) =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     axiosIns
       .get(uri + ToQuerystr(Params), { headers })
       .then(response => resolve(response));
@@ -49,7 +49,7 @@ const Get = (uri, Params, headers) =>
  * @param { Object } headers
  */
 const Post = (uri, Params = {}, headers) =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     axiosIns
       .post(uri, ToFormData(Params), { headers })
       .then(response => resolve(response));
@@ -62,7 +62,7 @@ const Post = (uri, Params = {}, headers) =>
  * @param { Object } headers
  */
 const Put = (uri, Params = {}, headers) =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     axiosIns
       .put(uri, ToFormData(Params), { headers })
       .then(response => resolve(response));
@@ -75,7 +75,7 @@ const Put = (uri, Params = {}, headers) =>
  * @param { Object } headers
  */
 const _Put = (uri, Params = {}, headers) =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     axiosIns.put(uri, Params, { headers }).then(response => resolve(response));
   });
 
@@ -86,7 +86,7 @@ const _Put = (uri, Params = {}, headers) =>
  * @param { Object } headers
  */
 const Delete = (uri, Params = {}, headers) =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     axiosIns
       .delete(uri, { data: ToFormData(Params) }, { headers })
       .then(response => resolve(response));

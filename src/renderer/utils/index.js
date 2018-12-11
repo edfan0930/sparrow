@@ -12,8 +12,8 @@ export const oneOf = (value, validList) => validList.includes(value);
  */
 export const isArray =
   Array.isArray ||
-  function(arr) {
-    return Object.prototype.toString.call(arr) === "[object Array]";
+  function (arr) {
+    return Object.prototype.toString.call(arr) === '[object Array]';
   };
 
 /**
@@ -22,7 +22,7 @@ export const isArray =
  * @returns { Boolean }
  */
 export const isObject = value =>
-  Object.prototype.toString.call(value) === "[object Object]";
+  Object.prototype.toString.call(value) === '[object Object]';
 
 /**
  * 是否為 Function
@@ -35,12 +35,11 @@ export const isFunction = fn => !!(fn && fn.constructor && fn.call && fn.apply);
  * 轉換為FormData格式
  * @param { Object } Params
  */
-export const ToFormData = Params => {
+export const ToFormData = (Params) => {
   const data = new FormData();
-  Object.keys(Params).forEach(key => {
+  Object.keys(Params).forEach((key) => {
     if (isArray(Params[key])) {
-      if (Params[key].length !== 0)
-        Params[key].forEach(v => data.append(key, v));
+      if (Params[key].length !== 0) { Params[key].forEach(v => data.append(key, v)); }
     } else data.append(key, Params[key]);
   });
   return data;
@@ -52,7 +51,7 @@ export const ToFormData = Params => {
  * @param { String } substring
  */
 export const FormatCode = (code, substring) =>
-  code.includes(substring) ? code.substr(0, code.indexOf(substring)) : code;
+  (code.includes(substring) ? code.substr(0, code.indexOf(substring)) : code);
 
 /**
  * 找出陣列內 相同/不相同 對象
@@ -110,7 +109,7 @@ export const Has = (object, key) =>
  * 添加斜線
  * @param { String } str
  */
-export const Slash = (str = "") => `/${str}`;
+export const Slash = (str = '') => `/${str}`;
 
 /**
  * 合併字串
@@ -124,7 +123,7 @@ export const MergeStr = (...str) => str.reduce((prev, curr) => (prev += curr));
  */
 export const isNumber = num =>
   !isNaN(num) &&
-  typeof num !== "object" &&
+  typeof num !== 'object' &&
   num !== Number.POSITIVE_INFINITY &&
   num !== Number.NEGATIVE_INFINITY;
 
@@ -132,10 +131,10 @@ export const isNumber = num =>
  * 檢查是否為空
  * @param { * } value
  */
-export const isEmpty = value => {
+export const isEmpty = (value) => {
   if (value == null) return true;
   if (isArray(value)) {
-    value.forEach(x => {
+    value.forEach((x) => {
       if (isObject(x)) return !Object.keys(x).length;
       return !x;
     });
@@ -145,7 +144,7 @@ export const isEmpty = value => {
     // }
     return !value.length;
   }
-  if (typeof value === "string") return !value.length;
+  if (typeof value === 'string') return !value.length;
   if (isObject(value)) return !Object.keys(value).length;
   if (!isNaN(value)) return false;
   return true;
@@ -155,7 +154,7 @@ export const isEmpty = value => {
  * Delete all null, undefined, '' properties from an object.
  * @param { Object } obj
  */
-export const RemoveEmptyValues = obj => {
+export const RemoveEmptyValues = (obj) => {
   if (!isObject(obj)) return {};
   Object.entries(obj).forEach(([key, val]) => {
     if (val && isObject(val)) RemoveEmptyValues(val);
@@ -168,12 +167,12 @@ export const RemoveEmptyValues = obj => {
  * Object 轉換為 query
  * @param { Object } obj
  */
-export const ToQuerystr = obj => {
-  if (!obj) return "";
+export const ToQuerystr = (obj) => {
+  if (!obj) return '';
   obj = RemoveEmptyValues(obj);
   return `?${Object.entries(obj)
     .map(([key, val]) => `${key}=${val}`)
-    .join("&")}`;
+    .join('&')}`;
 };
 
 /**
@@ -188,9 +187,7 @@ const Nesting = (Roles, ArrayVal, Obj, role, key) => {
     return ArrayVal.map(v => `${v}_${key}`);
   }
   const [SameKey] = intersectwith(equals, Roles, ArrayVal);
-  const NewArrayVal = ArrayVal.filter(val => val !== SameKey).concat(
-    Obj[SameKey][key]
-  );
+  const NewArrayVal = ArrayVal.filter(val => val !== SameKey).concat(Obj[SameKey][key]);
   return Nesting(Roles, NewArrayVal, Obj, role, key);
 };
 
@@ -198,15 +195,13 @@ const Nesting = (Roles, ArrayVal, Obj, role, key) => {
  * 扁平化 Object
  * @param { Object } Obj
  */
-export const factory = Obj => {
+export const factory = (Obj) => {
   const Roles = Object.keys(Obj);
   const GrantsObj = {};
-  Roles.forEach(role => {
+  Roles.forEach((role) => {
     GrantsObj[role] = [];
-    Object.keys(Obj[role]).forEach(key => {
-      GrantsObj[role] = GrantsObj[role].concat(
-        Nesting(Roles, Obj[role][key], Obj, role, key)
-      );
+    Object.keys(Obj[role]).forEach((key) => {
+      GrantsObj[role] = GrantsObj[role].concat(Nesting(Roles, Obj[role][key], Obj, role, key));
     });
   });
   return GrantsObj;

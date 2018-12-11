@@ -1,5 +1,5 @@
-import { Get } from "./instance";
-import router from "./router";
+import { Get } from './instance';
+import router from './router';
 
 export default {
   /**
