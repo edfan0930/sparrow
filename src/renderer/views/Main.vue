@@ -58,8 +58,8 @@
     <div class="layout">
         <Layout>
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
-                <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
-                    <MenuItem name="1-1">
+                <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses" @on-select="navigateTo">
+                    <MenuItem name="home">
                         <Icon type="ios-navigate"></Icon>
                         <span>Option 1</span>
                     </MenuItem>
@@ -78,7 +78,7 @@
                     <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px'}" type="md-menu" size="24"></Icon>
                 </Header>
                 <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
-                    Content
+                    <router-view></router-view>
                 </Content>
             </Layout>
         </Layout>
@@ -88,7 +88,7 @@
     export default {
         data () {
             return {
-                isCollapsed: false
+                isCollapsed: true
             }
         },
         computed: {
@@ -108,7 +108,13 @@
         methods: {
             collapsedSider () {
                 this.$refs.side1.toggleCollapse();
-            }
+            },
+            navigateTo () {
+                console.log("in")
+                this.$router.push({path:'/main/home'})
+                console.log(this.$route.path);
+            },
         }
+
     }
 </script>

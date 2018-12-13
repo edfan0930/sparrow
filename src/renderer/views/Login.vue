@@ -10,7 +10,7 @@
 
 import FormTool from '../components/FormTool';
 import { isEmpty } from '../utils';
-
+import pushTo from '@/router/push';
 export default {
   name: 'Login',
   components: {
@@ -33,7 +33,7 @@ export default {
           type: 'password',
           value: '',
         },
-      }
+      },
     };
   },
   methods: {
@@ -48,9 +48,22 @@ export default {
       if (isEmpty(resp)) {
         return;
       }
-      this.Api_Data = resp.data;
+
+ //     const hashKey = 'KEYS';
+      
+ //     this.Api_Data = resp.data;
+
+      // set localStorage
+//      localStorage.setObjectHash(hashKey, resp.data)
+
+      // get localStorage
+//      const Values = localStorage.getObjectHash(hashKey);
+//      console.log(Values)
+      pushTo.main(this.$router)
+      console.log(this.$route.path);
+    
     },
-  }
+  },
 };
 </script>
 

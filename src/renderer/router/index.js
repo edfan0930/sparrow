@@ -13,7 +13,7 @@ export default new Router({
     },
     {
       path: '/main',
-      name: 'Main',
+      name: 'main',
       meta: {
         icon: 'md-menu',
         title: '多级菜单',
@@ -21,12 +21,8 @@ export default new Router({
       component: Main,
       children: [
         {
-          path: '/switch',
-          name: 'Switch',
-          meta: {
-            icon: 'md-funnel',
-            title: '二级-1',
-          },
+          path: 'home',
+          name: 'home',
           component: () => import('@/views/user/switch'),
         },
       ],
