@@ -1,5 +1,6 @@
 <style scoped>
-     .ivu-layout{
+
+    .ivu-layout{
         height: 100%;
     }    
     .layout{
@@ -57,30 +58,16 @@
     <div class="layout">
         <Layout>
             <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
-                <Menu active-name="1-2" theme="dark" width="auto" :class="menuitemClasses">
-                    <router-link to="/switch">
-                        <MenuItem name="1-1">
-                       
-                           <Icon type="ios-navigate"></Icon>
-                           <span>Option 1</span>
-                       
-         
+                <Menu :active-name="ActiveNameIndex" theme="dark" width="auto" 
+                :class="menuitemClasses" @on-select="Menuevents" :open-names="[OpenNameIndex]">
+                    <Submenu :name="index + 1" :key="index" v-for="(value, index) in MenuData">
+                        <template slot="title">
+                            <Icon :type="value.icon"></Icon>
+                            <span>{{value.name}}</span>
+                        </template>
+                        <MenuItem :name="Link.path" :key="index_" v-for="(Link, index_) in value.Items">{{ Link.name }}
                         </MenuItem>
-                    </router-link>
-                    <router-link to="/create">
-                        <MenuItem name="1-2">
-                        
-                           <Icon type="ios-search"></Icon>
-                           <span>Option 2</span>
-                       
-                        </MenuItem>
-                    </router-link>
-                    <router-link to="/get"> 
-                        <MenuItem name="1-3">
-                            <Icon type="ios-settings"></Icon>
-                            <span>Option 3</span>
-                        </MenuItem>
-                    </router-link>
+                    </Submenu>
                 </Menu>
             </Sider>
             <Layout>
@@ -96,10 +83,17 @@
 </template>
 <script>
     export default {
+        name:   'Menu',
         data () {
             return {
-                isCollapsed: true
+                isCollapsed: true,
+                OpenNameIndex: 1,
+                ActiveNameIndex: '',
             }
+        },
+        created() {
+            this.OpenName();
+            this.ActiveName();
         },
         computed: {
             rotateIcon () {
@@ -118,7 +112,48 @@
         methods: {
             collapsedSider () {
                 this.$refs.side1.toggleCollapse();
-            }
-        }
+            },
+            OpenName() {
+              this.MenuData.forEach((v, i) => {
+                if (this.$route.path.includes(v.path)) {
+                   this.OpenNameIndex = i + 1;
+                }
+              });
+              this.$nextTick(() => {
+                // this.$refs.menu.$children[this.OpenNameIndex - 1].opened = true;
+                this.$refs.menu.$children.forEach((item, index) => {
+                  if (index === (this.OpenNameIndex - 1)) item.opened = true;
+                  else item.opened = false;
+                });
+              });
+            },
+            /**
+             * 指向頁面
+             */
+            ActiveName() {
+              this.MenuData.forEach(v => {
+                v.Items.forEach(v_ => {
+                  if (this.$route.path.includes(v_.path)) {
+                    this.ActiveNameIndex = v_.path;
+                  }
+                });
+              });
+            },
+            /**
+             * 前往頁面
+             */
+            Menuevents(name) {
+                console.log("in",name)
+              this.$router.push({
+                path: name,
+              });
+            },
+          },
+          watch: {
+            $route() {
+              this.OpenName();
+              this.ActiveName();
+            },
+          },    
     }
 </script>

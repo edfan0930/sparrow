@@ -21,9 +21,19 @@ export default new Router({
       component: Main,
       children: [
         {
-          path: 'home',
+          path: '/switch',
           name: 'home',
           component: () => import('@/views/user/switch'),
+        },
+        {
+          path: '/create',
+          name: 'create',
+          component: () => import('@/views/user/create'),
+        },
+        {
+          path: '/get',
+          name: 'get',
+          component: () => import('@/views/user/get'),
         },
       ],
     },

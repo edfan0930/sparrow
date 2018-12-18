@@ -61,6 +61,7 @@ export default {
 //      console.log(Values)
       pushTo.main(this.$router)
       console.log(this.$route.path);
+      console.log(this.$router.options.routes.filter(i => i.name ==="main"))
     
     },
   },
